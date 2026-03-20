@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lluvia de Recuerdos</title>
+
+<style>
+    body {
+        margin: 0;
+        overflow: hidden;
+        background: black;
+        font-family: Arial, sans-serif;
+    }
+
+    /* Fotos */
+    .foto {
+        position: fixed;
+        top: -100px;
+        width: 80px;
+        border-radius: 12px;
+        opacity: 0;
+        animation: caer linear forwards;
+        z-index: 2;
+    }
+
+    /* Estrellas */
+    .estrella {
+        position: fixed;
+        top: -20px;
+        width: 4px;
+        height: 4px;
+        background: white;
+        border-radius: 50%;
+        box-shadow: 0 0 10px white;
+        animation: caer linear infinite;
+        z-index: 1;
+    }
+
+    /* Frase */
+    .frase {
+        position: fixed;
+        color: white;
+        font-size: 20px;
+        text-align: center;
+        width: 90%;
+        top: 40%;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 3;
+        opacity: 1;
+    }
+
+    .palabra {
+        opacity: 0;
+        margin-right: 5px;
+        display: inline-block;
+        animation: aparecerPalabra 0.5s forwards;
+    }
+
+    @keyframes aparecerPalabra {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes caer {
+        0% { transform: translateY(-100px); opacity: 0; }
+        20% { opacity: 1; }
+        100% { transform: translateY(110vh); opacity: 0; }
+    }
+
+    /* Botón música */
+    .btn-musica {
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        z-index: 10;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 10px;
+        background: rgba(255,255,255,0.2);
+        color: white;
+        font-size: 14px;
+        backdrop-filter: blur(5px);
+    }
+
+    /* Ajuste móvil */
+    @media (max-width: 600px) {
+        .foto { width: 60px; }
+        .frase { font-size: 16px; }
+    }
+</style>
+</head>
+
+<body>
+
+<!-- Música -->
+<audio id="musica" loop>
+    <source src="musica.mp3" type="audio/mpeg">
+</audio>
+
+<button class="btn-musica" id="btnMusica">▶️ Reproducir</button>
+
+<script>
+    // Música
+    const audio = document.getElementById("musica");
+    const btn = document.getElementById("btnMusica");
+
+    let reproduciendo = false;
+
+    btn.addEventListener("click", () => {
+        if (!reproduciendo) {
+            audio.play().then(() => {
+                btn.textContent = "⏸️ Pausar";
+                reproduciendo = true;
+            });
+        } else {
+            audio.pause();
+            btn.textContent = "▶️ Reproducir";
+            reproduciendo = false;
+        }
+    });
+
+    // Fotos
+    function crearFoto(i) {
+        const img = document.createElement("img");
+        img.src = "foto" + i + ".jpg";
+        img.className = "foto";
+
+        img.style.left = Math.random() * 100 + "vw";
+
+        const duracion = (6 + Math.random() * 4);
+        img.style.animationDuration = duracion + "s";
+        img.style.animationDelay = (i * 0.6) + "s";
+
+        document.body.appendChild(img);
+
+        setTimeout(() => {
+            img.remove();
+            crearFoto(i);
+        }, (duracion + i * 0.6) * 1000);
+    }
+
+    for (let i = 1; i <= 30; i++) {
+        crearFoto(i);
+    }
+
+    // Estrellas
+    function crearEstrella() {
+        const star = document.createElement("div");
+        star.className = "estrella";
+
+        star.style.left = Math.random() * 100 + "vw";
+
+        const duracion = (3 + Math.random() * 3);
+        star.style.animationDuration = duracion + "s";
+
+        document.body.appendChild(star);
+
+        setTimeout(() => {
+            star.remove();
+            crearEstrella();
+        }, duracion * 1000);
+    }
+
+    for (let i = 0; i < 50; i++) {
+        crearEstrella();
+    }
+
+    // FRASE CORREGIDA (100% funcional en celular)
+    function mostrarFrase() {
+        const contenedor = document.createElement("div");
+        contenedor.className = "frase";
+
+        const texto = "Gracias por este año de amistad, por cada risa y cada momento. Eres alguien muy especial en mi vida… TE QUIERO ENANA ❤️";
+        const palabras = texto.split(" ");
+
+        document.body.appendChild(contenedor);
+
+        // Mostrar palabra por palabra
+        palabras.forEach((palabra, index) => {
+            setTimeout(() => {
+                const span = document.createElement("span");
+                span.className = "palabra";
+                span.textContent = palabra + " ";
+                contenedor.appendChild(span);
+            }, index * 300);
+        });
+
+        const tiempoTotal = palabras.length * 300;
+
+        // Desvanecer
+        setTimeout(() => {
+            contenedor.style.transition = "opacity 2s ease";
+            contenedor.style.opacity = "0";
+        }, tiempoTotal + 2000);
+
+        // Eliminar completamente
+        setTimeout(() => {
+            contenedor.remove();
+        }, tiempoTotal + 4000);
+    }
+
+    setTimeout(mostrarFrase, 2000);
+</script>
+
+</body>
+</html>

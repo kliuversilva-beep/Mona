@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Para mi amiga</title>
+
+<style>
+
+body{
+margin:0;
+font-family: Arial;
+text-align:center;
+background: linear-gradient(135deg,#8e2de2,#4a00e0);
+color:white;
+overflow:auto;
+}
+
+.contenido{
+padding:80px 30px 30px 30px;
+}
+
+h1{
+font-size:35px;
+}
+
+p{
+font-size:20px;
+}
+
+img{
+width:90%;
+max-width:300px;
+border-radius:20px;
+margin:10px;
+}
+
+.musica{
+position:fixed;
+top:10px;
+left:50%;
+transform:translateX(-50%);
+z-index:1000;
+}
+
+.corazon{
+position:fixed;
+top:-20px;
+color:red;
+font-size:20px;
+animation: caer 5s linear infinite;
+pointer-events:none;
+}
+
+@keyframes caer{
+0%{
+top:-20px;
+opacity:1;
+}
+
+100%{
+top:100vh;
+opacity:0;
+}
+}
+
+</style>
+
+</head>
+
+<body>
+
+<audio controls autoplay loop class="musica">
+<source src="musica.mp3" type="audio/mpeg">
+</audio>
+
+<div class="contenido">
+
+<h1>Para mi mejor amiga 💖</h1>
+
+<p>
+Quería hacer esta pequeña página para recordarte
+lo importante que eres para mí.
+</p>
+
+<p>
+Gracias por cada momento, cada risa y cada recuerdo.
+Nuestra amistad significa mucho.
+</p>
+
+<img src="imagen1.jpg">
+<img src="imagen2.jpg">
+<img src="imagen3.jpg">
+<img src="imagen4.jpg">
+<img src="imagen5.jpg">
+<img src="imagen6.jpg">
+
+<p>
+Siempre voy a valorar nuestra amistad ✨
+</p>
+
+</div>
+
+<script>
+
+function crearCorazon(){
+const corazon = document.createElement("div");
+corazon.classList.add("corazon");
+corazon.innerHTML = "❤";
+corazon.style.left = Math.random()*100+"vw";
+corazon.style.fontSize = Math.random()*20+10+"px";
+document.body.appendChild(corazon);
+
+setTimeout(()=>{
+corazon.remove();
+},5000);
+}
+
+setInterval(crearCorazon,300);
+
+</script>
+
+</body>
+</html>
